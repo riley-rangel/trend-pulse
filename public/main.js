@@ -13,10 +13,12 @@ fetch('/trending')
 
 function renderTrendTerm(term) {
   const $element = createElement('div', {
-    'class': 'term-card col s12 m6 l3 xl3',
+    'class': 'col s12 m6 l3 xl3',
     'data-keyword': term
   }, [
-    createElement('h3', {}, [term])
+    createElement('div', {'class': 'term-card card white'}, [
+      createElement('h4', {'class': 'term-content card-content center'}, [term])
+    ])
   ])
   return $element
 }
