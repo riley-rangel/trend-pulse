@@ -16,16 +16,25 @@ body {
   color: rgba(255, 255, 255, 1);
 }
 
+.heading {
+  margin-top: 0;
+  margin-bottom: 3rem;
+}
+
 .view {
   padding-top: 64px;
 }
 
 .term-card {
-  height: 200px;
+  margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
+  height: 72px;
 }
 
 .term-content {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+  margin: 0 !important;
+  margin-left: 40px !important;
 }
