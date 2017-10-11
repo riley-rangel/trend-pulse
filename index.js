@@ -10,7 +10,7 @@ app.get('/trending', (req, res) => {
   gst.result((error, response) => {
     if (error) {
       console.error(error)
-      res.sendStatus(404)
+      res.sendStatus(500)
       process.exit(1)
     }
     res.json(response['1'])
