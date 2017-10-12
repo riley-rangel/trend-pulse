@@ -37,5 +37,7 @@ document.body.addEventListener('click', () => {
   const $targetTerm = event.target.closest('.term-card')
   if (!$targetTerm) return
   const keyword = $targetTerm.getAttribute('data-keyword')
-  console.log(keyword)
+  fetch('/trending/' + keyword)
+    .then(response => console.log(response))
+    .catch(reject => console.error(reject))
 })
