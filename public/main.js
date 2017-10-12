@@ -32,3 +32,10 @@ function renderTrendTerm(term, number) {
   ])
   return $element
 }
+
+document.body.addEventListener('click', () => {
+  const $targetTerm = event.target.closest('.term-card')
+  if (!$targetTerm) return
+  const keyword = $targetTerm.getAttribute('data-keyword')
+  console.log(keyword)
+})
