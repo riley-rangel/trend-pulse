@@ -118,9 +118,6 @@ function renderGlobalHeatMap(selector, dataset, svgHeight, svgWidth, scale) {
       set.id = geoName.id
     })
 
-    console.log(dataset)
-    console.log(countries)
-
     map.selectAll('.countries')
       .data(countries)
       .enter().append('path')
