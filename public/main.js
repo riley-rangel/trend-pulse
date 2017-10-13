@@ -41,3 +41,40 @@ document.body.addEventListener('click', () => {
     .then(response => console.log(response))
     .catch(reject => console.error(reject))
 })
+
+const $data = document.querySelector('.data')
+
+function renderDataContainers(keyword) {
+  const $div = createElement('div', {}, [
+    createElement('h4', {'class': 'heading center'}, [
+      'Trend Information for: "' + keyword + '"'
+    ]),
+    createElement('div', {
+      'class': 'col s6',
+      'id': 'area-graph'
+    }, [
+      createElement('p', {'class': 'data-header center'}, [
+        'U.S. Search Interest (24 Hrs.)'
+      ]),
+      createElement('div', {'class': 'card z-depth-1'}, []),
+      createElement('p', {'class': 'data-footer center'}, [
+        'Infomation via Google Trends. All times are Central Standard.'
+      ])
+    ]),
+    createElement('div', {
+      'class': 'col s6',
+      'id': 'world-map'
+    }, [
+      createElement('p', {'class': 'data-header center'}, [
+        'Global Interest by Region (24 Hrs.)'
+      ]),
+      createElement('div', {'class': 'card z-depth-1'}, []),
+      createElement('p', {'class': 'data-footer center'}, [
+        'Infomation via Google Trends. All times are Central Standard.'
+      ])
+    ])
+  ])
+  return $div
+}
+
+$data.appendChild(renderDataContainers())
