@@ -64,8 +64,12 @@ document.body.addEventListener('click', () => {
         })
       })
       const data = [areaGraphData, worldMapData]
-      console.log(data)
       return data
+    })
+    .then(data => {
+      const [areaGraphData, worldMapData] = data
+      renderAreaChart('#area-graph', areaGraphData, 400, 400)
+      renderGlobalHeatMap('#world-map', worldMapData, 400, 400, 100)
     })
     .catch(reject => console.error(reject))
 })
@@ -118,6 +122,3 @@ document.body.addEventListener('click', () => {
       : view.classList.add('hide')
   })
 })
-
-renderAreaChart()
-renderGlobalHeatMap()
