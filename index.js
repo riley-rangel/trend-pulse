@@ -20,38 +20,18 @@ app.get('/trending', (req, res) => {
 
 app.get('/trending/:keyword', (req, res) => {
   const keyword = req.params.keyword
-  const payload = []
-
-  googleTrends.interestOverTime({
-    keyword: keyword,
-    startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
-  })
-    .then(response => JSON.parse(response))
-    .then(parsed => parsed.default)
-    .then(data => {
-      payload.push(data)
+  Promise.all([
+    googleTrends.interestOverTime({
+      keyword: keyword,
+      startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
+    }),
+    googleTrends.interestByRegion({
+      keyword: keyword,
+      startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
     })
-    .catch(reject => {
-      console.error(reject)
-      res.sendStatus(500)
-      process.exit(1)
-    })
-
-  googleTrends.interestByRegion({
-    keyword: keyword,
-    startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
-  })
-    .then(response => JSON.parse(response))
-    .then(parsed => parsed.default)
-    .then(data => {
-      payload.push(data)
-      return payload
-    })
-    .then(payload => res.json(payload))
-    .catch(reject => {
-      console.error(reject)
-      res.sendStatus(500)
-    })
+  ])
+    .then(response => res.json(response))
+    .catch(reject => console.error(reject))
 })
 
 app.listen(3000, () => console.log('Port 3000 Open.'))
