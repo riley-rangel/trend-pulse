@@ -2,13 +2,14 @@
 /* global d3 topojson geoNameIds */
 
 function renderAreaChart(selector, dataset, svgHeight, svgWidth) {
-  const margin = {top: 20, right: 20, bottom: 20, left: 50}
+  const margin = {top: 20, right: 15, bottom: 20, left: 15}
   const height = svgHeight - margin.top - margin.bottom
   const width = svgWidth - margin.left - margin.right
 
   const svg = d3.select(selector).append('svg')
     .attr('height', height)
     .attr('width', width)
+    .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
 
   const parseDate = d3.timeParse('%b %e, %Y at %I:%M %p')
 
@@ -89,6 +90,8 @@ function color(country, trendData) {
 
 function renderGlobalHeatMap(selector, dataset, svgHeight, svgWidth, scale) {
   const map = d3.select(selector).append('svg')
+    .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
+
   const height = svgHeight
   const width = svgWidth
 

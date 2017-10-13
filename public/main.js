@@ -68,8 +68,8 @@ document.body.addEventListener('click', () => {
     })
     .then(data => {
       const [areaGraphData, worldMapData] = data
-      renderAreaChart('#area-graph', areaGraphData, 400, 400)
-      renderGlobalHeatMap('#world-map', worldMapData, 400, 400, 100)
+      renderAreaChart('#area-graph', areaGraphData, 400, 600)
+      renderGlobalHeatMap('#world-map', worldMapData, 377, 600, 100)
     })
     .catch(reject => console.error(reject))
 })
