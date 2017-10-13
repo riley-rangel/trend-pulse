@@ -1,4 +1,4 @@
-/* global createElement */
+/* global createElement renderAreaChart renderGlobalHeatMap */
 
 const $home = document.querySelector('.home')
 const today = new Date(Date.now())
@@ -90,3 +90,6 @@ document.body.addEventListener('click', () => {
       : view.classList.add('hide')
   })
 })
+
+renderAreaChart()
+renderGlobalHeatMap()
