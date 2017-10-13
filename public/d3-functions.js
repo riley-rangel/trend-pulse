@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* global d3 topojson geoNameIds */
 
-function renderAreaChart(selector, dataset) {
+function renderAreaChart(selector, dataset, svgHeight, svgWidth) {
   const margin = {top: 20, right: 20, bottom: 20, left: 50}
-  const height = 400 - margin.top - margin.bottom
-  const width = 1000 - margin.left - margin.right
+  const height = svgHeight - margin.top - margin.bottom
+  const width = svgWidth - margin.left - margin.right
 
   const svg = d3.select(selector).append('svg')
     .attr('height', height)
@@ -84,5 +84,51 @@ function color(country, trendData) {
       return '#002171'
     default:
       return '#bbdefb'
+  }
+}
+
+function renderGlobalHeatMap(selector, dataset, svgHeight, svgWidth, scale) {
+  const map = d3.select(selector).append('svg')
+  const height = svgHeight
+  const width = svgWidth
+
+  d3.queue()
+    .defer(d3.json, 'world-map.json')
+    .await(ready)
+
+  const projection = d3.geoMercator()
+    .translate([width / 2, height / 2])
+    .scale(scale)
+
+  const path = d3.geoPath()
+    .projection(projection)
+
+  function ready(error, world) {
+    if (error) {
+      console.log(error)
+    }
+
+    const countries = topojson.feature(world, world.objects.countries).features
+
+    dataset.forEach(set => {
+      const idIndex = geoNameIds.findIndex(item => {
+        return item.country === set.geoName
+      })
+      const geoName = geoNameIds[idIndex]
+      set.id = geoName.id
+    })
+
+    console.log(dataset)
+    console.log(countries)
+
+    map.selectAll('.countries')
+      .data(countries)
+      .enter().append('path')
+      .attr('id', d => d.id)
+      .attr('class', 'countries')
+      .attr('d', path)
+      .attr('stroke', '#bbdefb')
+      .attr('stroke-width', '0.5')
+      .attr('fill', d => color(d, dataset))
   }
 }
