@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const gst = require('google-search-trends')
+const googleTrends = require('google-trends-api')
 
 const app = express()
 
