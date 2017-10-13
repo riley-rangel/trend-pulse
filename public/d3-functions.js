@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* global d3 topojson */
+/* global d3 topojson geoNameIds */
 
 function renderAreaChart(selector, dataset) {
   const margin = {top: 20, right: 20, bottom: 20, left: 50}
