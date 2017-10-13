@@ -57,3 +57,32 @@ function renderAreaChart(selector, dataset) {
     .attr('dy', '0.71em')
     .attr('text-anchor', 'end')
 }
+
+function color(country, trendData) {
+  const dataIndex = trendData.findIndex(data => {
+    return data.id === country.id
+  })
+  if (dataIndex === -1) {
+    return '#bbdefb'
+  }
+  const region = trendData[dataIndex]
+  const value = region.value
+  switch (true) {
+    case (value >= 0 && value < 15):
+      return '#64b5f6'
+    case (value >= 15 && value < 30):
+      return '#42a5f5'
+    case (value >= 30 && value < 45):
+      return '#2196f3'
+    case (value >= 45 && value < 60):
+      return '#1976d2'
+    case (value >= 60 && value < 75):
+      return '#1565c0'
+    case (value >= 75 && value < 90):
+      return '#0d47a1'
+    case (value >= 90 && value <= 100):
+      return '#002171'
+    default:
+      return '#bbdefb'
+  }
+}
