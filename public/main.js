@@ -78,3 +78,15 @@ function renderDataContainers(keyword) {
 }
 
 $data.appendChild(renderDataContainers())
+
+const $views = document.querySelectorAll('.view')
+
+document.body.addEventListener('click', () => {
+  const $targetTerm = event.target.closest('.term-card')
+  if (!$targetTerm) return
+  $views.forEach(view => {
+    view.classList.contains('data')
+      ? view.classList.remove('hide')
+      : view.classList.add('hide')
+  })
+})
