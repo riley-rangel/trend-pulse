@@ -76,10 +76,11 @@ document.body.addEventListener('click', () => {
 
 const $data = document.querySelector('.data')
 
-function renderDataContainers(keyword) {
+function renderDataContainers() {
   const $div = createElement('div', {}, [
     createElement('h4', {'class': 'heading center'}, [
-      'Trend Information for: "' + keyword + '"'
+      'Trend Information for: ',
+      createElement('span', {'id': 'keyword'}, ['test'])
     ]),
     createElement('div', {'class': 'col s6'}, [
       createElement('p', {'class': 'data-header center'}, [
