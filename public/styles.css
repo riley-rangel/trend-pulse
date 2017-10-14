@@ -37,4 +37,32 @@ body {
   transform: translateY(-50%);
   margin: 0 !important;
   margin-left: 40px !important;
+  cursor: pointer;
+}
+
+.data-header {
+  margin-bottom: 1rem;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 1.5rem;
+}
+
+.data-footer {
+  font-size: 0.75rem;
+  color: #757575;
+}
+
+#area-graph,
+#world-map {
+  height: 100%;
+  padding: 1rem;
+}
+
+svg {
+  height: inherit;
+  width: 100%;
+}
+
+#world-map > svg {
+  transform: translateY(1%);
+  border: 2px solid rgb(34, 120, 207);
 }

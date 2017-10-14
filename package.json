@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "express": "^4.16.2",
-    "google-search-trends": "0.0.2"
+    "google-search-trends": "0.0.2",
+    "google-trends-api": "^4.2.2"
   }
 }

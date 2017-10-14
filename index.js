@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const gst = require('google-search-trends')
+const googleTrends = require('google-trends-api')
 
 const app = express()
 
@@ -15,6 +16,22 @@ app.get('/trending', (req, res) => {
     }
     res.json(response['1'])
   })
+})
+
+app.get('/trending/:keyword', (req, res) => {
+  const keyword = req.params.keyword
+  Promise.all([
+    googleTrends.interestOverTime({
+      keyword: keyword,
+      startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
+    }),
+    googleTrends.interestByRegion({
+      keyword: keyword,
+      startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
+    })
+  ])
+    .then(response => res.json(response))
+    .catch(reject => console.error(reject))
 })
 
 app.listen(3000, () => console.log('Port 3000 Open.'))
