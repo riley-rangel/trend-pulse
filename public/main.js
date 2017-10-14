@@ -130,3 +130,13 @@ document.body.addEventListener('click', () => {
   const keyword = $targetTerm.getAttribute('data-keyword')
   $keyword.textContent = '"' + keyword + '"'
 })
+
+const $searchForm = document.querySelector('#searchbar')
+
+$searchForm.addEventListener('submit', () => {
+  event.preventDefault()
+  const formData = new FormData($searchForm)
+  const keyword = formData.get('keyword')
+  fetchKeywordData(keyword)
+  $searchForm.reset()
+})
