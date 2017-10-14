@@ -138,7 +138,7 @@ $searchForm.addEventListener('submit', () => {
   event.preventDefault()
   const formData = new FormData($searchForm)
   const keyword = formData.get('keyword')
-  fetchKeywordData(keyword)
+  router.push('data', {'keyword': keyword})
   $searchForm.reset()
 })
 
