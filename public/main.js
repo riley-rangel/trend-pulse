@@ -33,6 +33,33 @@ function renderTrendTerm(term, number) {
   return $element
 }
 
+console.log(renderHomeTrends)
+
+function renderHomeTrends(termList, startNumber) {
+  let number = startNumber
+  const $element = createElement('div', {'class': 'row'}, [])
+  const $heading = createElement('h4', {'class': 'heading center'}, [
+    'Trending Searches - ' + (today.getMonth() + 1) + '/' + today.getDate() +
+      '/' + today.getFullYear()
+  ])
+  $element.appendChild($heading)
+  termList.forEach(term => {
+    const $child = createElement('div', {'class': 'col s8 offset-s2'}, [
+      createElement('div', {
+        'class': 'term-card card white',
+        'data-keyword': term
+      }, [
+        createElement('h5', {
+          'class': 'term-content card-content'
+        }, [number + '. ' + term])
+      ])
+    ])
+    number++
+    $element.appendChild($child)
+  })
+  return $element
+}
+
 document.body.addEventListener('click', () => {
   const $targetTerm = event.target.closest('.term-card')
   if (!$targetTerm) return
