@@ -1,6 +1,8 @@
 /* global createElement renderAreaChart renderGlobalHeatMap HashRouter */
 
-const $home = document.querySelector('.home')
+const $views = document.querySelectorAll('.view')
+const $home = document.querySelector('#home')
+const $searchForm = document.querySelector('#searchbar')
 const today = new Date(Date.now())
 
 fetch('/trending')
@@ -106,10 +108,6 @@ function renderDataContainers() {
   ])
   return $div
 }
-
-const $views = document.querySelectorAll('.view')
-
-const $searchForm = document.querySelector('#searchbar')
 
 $searchForm.addEventListener('submit', () => {
   event.preventDefault()
