@@ -38,8 +38,7 @@ function renderHomeTrends(termList, startNumber) {
 document.body.addEventListener('click', () => {
   const $targetTerm = event.target.closest('.term-card')
   if (!$targetTerm) return
-  const keyword = $targetTerm.getAttribute('data-keyword')
-  fetchKeywordData(keyword)
+  router.push('data', {'keyword': $targetTerm.getAttribute('data-keyword')})
 })
 
 function fetchKeywordData(keyword) {
