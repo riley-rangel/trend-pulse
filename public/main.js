@@ -140,3 +140,11 @@ $searchForm.addEventListener('submit', () => {
   fetchKeywordData(keyword)
   $searchForm.reset()
 })
+
+$searchForm.addEventListener('submit', () => {
+  $views.forEach(view => {
+    view.classList.contains('data')
+      ? view.classList.remove('hide')
+      : view.classList.add('hide')
+  })
+})
