@@ -37,6 +37,10 @@ document.body.addEventListener('click', () => {
   const $targetTerm = event.target.closest('.term-card')
   if (!$targetTerm) return
   const keyword = $targetTerm.getAttribute('data-keyword')
+  fetchKeywordData(keyword)
+})
+
+function fetchKeywordData(keyword) {
   fetch('/trending/' + keyword)
     .then(response => response.json())
     .then(JSONResponse => {
@@ -72,7 +76,7 @@ document.body.addEventListener('click', () => {
       renderGlobalHeatMap('#world-map', worldMapData, 377, 600, 100)
     })
     .catch(reject => console.error(reject))
-})
+}
 
 const $data = document.querySelector('.data')
 
