@@ -42,7 +42,7 @@ document.body.addEventListener('click', () => {
 })
 
 function fetchKeywordData(keyword) {
-  fetch('/trending/' + keyword)
+  return fetch('/trending/' + keyword)
     .then(response => response.json())
     .then(JSONResponse => {
       const datasets = []
