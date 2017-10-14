@@ -1,4 +1,4 @@
-/* global createElement renderAreaChart renderGlobalHeatMap */
+/* global createElement renderAreaChart renderGlobalHeatMap HashRouter */
 
 const $home = document.querySelector('.home')
 const today = new Date(Date.now())
@@ -148,3 +148,7 @@ $searchForm.addEventListener('submit', () => {
       : view.classList.add('hide')
   })
 })
+
+const router = new HashRouter($views)
+
+router.listen()
