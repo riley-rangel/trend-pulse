@@ -107,30 +107,7 @@ function renderDataContainers() {
   return $div
 }
 
-const $data = document.querySelector('.data')
-
-$data.appendChild(renderDataContainers())
-
 const $views = document.querySelectorAll('.view')
-
-document.body.addEventListener('click', () => {
-  const $targetTerm = event.target.closest('.term-card')
-  if (!$targetTerm) return
-  $views.forEach(view => {
-    view.classList.contains('data')
-      ? view.classList.remove('hide')
-      : view.classList.add('hide')
-  })
-})
-
-const $keyword = document.querySelector('#keyword')
-
-document.body.addEventListener('click', () => {
-  const $targetTerm = event.target.closest('.term-card')
-  if (!$targetTerm) return
-  const keyword = $targetTerm.getAttribute('data-keyword')
-  $keyword.textContent = '"' + keyword + '"'
-})
 
 const $searchForm = document.querySelector('#searchbar')
 
@@ -140,14 +117,6 @@ $searchForm.addEventListener('submit', () => {
   const keyword = formData.get('keyword')
   router.push('data', {'keyword': keyword})
   $searchForm.reset()
-})
-
-$searchForm.addEventListener('submit', () => {
-  $views.forEach(view => {
-    view.classList.contains('data')
-      ? view.classList.remove('hide')
-      : view.classList.add('hide')
-  })
 })
 
 const router = new HashRouter($views)
