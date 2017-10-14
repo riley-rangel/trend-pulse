@@ -80,7 +80,7 @@ function fetchKeywordData(keyword) {
 }
 
 function renderDataContainers() {
-  const $div = createElement('div', {}, [
+  const $div = createElement('div', {'class': 'row'}, [
     createElement('h4', {'class': 'heading center'}, [
       'Trend Information for: ',
       createElement('span', {'id': 'keyword'}, ['test'])
