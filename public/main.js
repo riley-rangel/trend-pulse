@@ -163,4 +163,12 @@ router.when('home', ($view, params) => {
     .catch(reject => console.error(reject))
 })
 
+router.when('data', ($view, params) => {
+  $view.innerHTML = ''
+  $view.appendChild(renderDataContainers())
+  const $keyword = document.querySelector('#keyword')
+  $keyword.textContent = '"' + params.keyword + '"'
+  return fetchKeywordData(params.keyword)
+})
+
 router.listen()
