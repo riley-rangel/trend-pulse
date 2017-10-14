@@ -80,8 +80,6 @@ function fetchKeywordData(keyword) {
     .catch(reject => console.error(reject))
 }
 
-const $data = document.querySelector('.data')
-
 function renderDataContainers() {
   const $div = createElement('div', {}, [
     createElement('h4', {'class': 'heading center'}, [
@@ -109,6 +107,8 @@ function renderDataContainers() {
   ])
   return $div
 }
+
+const $data = document.querySelector('.data')
 
 $data.appendChild(renderDataContainers())
 
@@ -152,5 +152,15 @@ $searchForm.addEventListener('submit', () => {
 })
 
 const router = new HashRouter($views)
+
+router.when('home', ($view, params) => {
+  return fetch('/trending')
+    .then(response => response.json())
+    .then(data => {
+      $view.innerHTML = ''
+      $view.appendChild(renderHomeTrends(data, 1))
+    })
+    .catch(reject => console.error(reject))
+})
 
 router.listen()
