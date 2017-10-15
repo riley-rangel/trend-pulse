@@ -7,26 +7,37 @@
       rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans"
       rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet" />
     <title>Trend Pulse</title>
   </head>
   <body>
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper blue">
-          <p id="header-text">Trend Pulse</p>
+          <a href="#home">
+            <p id="header-text">Trend Pulse</p>
+          </a>
+          <form id="searchbar">
+            <div class="input-field">
+              <input id="search" type="search" name="keyword" required />
+              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            </div>
+          </form>
         </div>
       </nav>
     </div>
-    <div class="container">
-      <div class="row home view">
-      </div>
-      <div class="row data view hide">
-      </div>
+    <div class="container view" id="home">
+    </div>
+    <div class="container view hide" id="data">
     </div>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="geo-name.js"></script>
     <script src="d3-functions.js"></script>
+    <script src="query-string.js"></script>
+    <script src="hash-router.js"></script>
     <script src="create-element.js"></script>
     <script src="main.js"></script>
   </body>
