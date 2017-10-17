@@ -2,6 +2,10 @@ const express = require('express')
 const path = require('path')
 const gst = require('google-search-trends')
 const googleTrends = require('google-trends-api')
+const Twitter = require('twitter')
+require('dotenv').config()
+
+console.log(Twitter)
 
 const app = express()
 
