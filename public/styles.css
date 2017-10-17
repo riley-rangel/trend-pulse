@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "edge-icons";
+  src: url("fonts/edge-icons-Regular.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -77,4 +82,132 @@ svg {
 #world-map > svg {
   transform: translateY(1%);
   border: 2px solid rgb(34, 120, 207);
+}
+
+#tweets {
+  height: 100%;
+  padding: 1.5rem;
+  overflow: scroll;
+}
+
+#tweets > ul {
+  display: inline-flex;
+}
+
+.tweet {
+  float: left;
+  margin: 1rem;
+  padding-right: 1rem;
+  width: 28rem;
+  border-right: 1px solid rgb(238, 238, 238);
+}
+
+.tweet > * {
+  color: black;
+  font-family: "Helvetica Neue";
+}
+
+.tweet:last-of-type {
+  margin-right: 5rem;
+  border-right: none;
+}
+
+.tweet-header,
+.tweet-body,
+.tweet-footer {
+  padding: 1rem 0;
+}
+
+.tweet-header {
+  padding-top: 0;
+  height: 5rem;
+  width: 100%;
+}
+
+.tweet-header-left,
+.tweet-header-center {
+  float: left;
+}
+
+.tweet-header-center {
+  margin-left: 0.75rem;
+  transform: translateY(-3%);
+}
+
+.tweet-header-center > h5 {
+  margin: 0;
+}
+
+.user-name > a {
+  color: black !important;
+  font-weight: bold;
+}
+
+.user-name > a:hover {
+  color: rgb(42, 162, 239) !important;
+  text-decoration: underline !important;
+  font-weight: bold;
+}
+
+.user-name > a,
+.user-screen-name {
+  font-size: 1.25rem !important;
+  line-height: 80%;
+}
+
+.tweet-header-right {
+  height: 4rem;
+}
+
+.tweet-header-right > a > img {
+  height: 4rem;
+  width: auto;
+  transform: translateY(-17.5%);
+}
+
+.tweet-body {
+  height: 14rem;
+}
+
+.tweet-text {
+  font-size: 1.75rem;
+  font-weight: bold;
+  line-height: 120%;
+}
+
+.tweet-footer {
+  padding-bottom: 0;
+}
+
+.time {
+  font-weight: bold;
+}
+
+.icons {
+  font-family: "edge-icons";
+  transform: translateY(-7%);
+}
+
+.replies-icon,
+.favorties-icon {
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: black;
+}
+
+.user-img {
+  border-radius: 100%;
+}
+
+.replies,
+.retweets,
+.favorites {
+  float: left;
+  margin-right: 1rem;
+}
+
+.replies-count,
+.retweets-count,
+.favorites-count {
+  margin-left: 0.3rem;
 }
