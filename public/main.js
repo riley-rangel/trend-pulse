@@ -158,7 +158,7 @@ function fetchTweets(keyword) {
     .catch(reject => console.error)
 }
 
-console.log(fetchTweets)
+console.log(fetchTweets + renderTweets)
 
 function filterRawTwitter(response) {
   const filteredData = []
@@ -180,4 +180,63 @@ function filterRawTwitter(response) {
     filteredData.push(filtered)
   })
   return filteredData
+}
+
+function renderTweets(filteredData) {
+  const $list = document.createElement('ul')
+  filteredData.forEach(dataset => {
+    const $tweet = createElement('li', {'class': 'tweet'}, [
+      createElement('a', {'href': dataset.tweetURL}, [
+        createElement('div', {'class': 'tweet-header'}, [
+          createElement('div', {'class': 'tweet-header-left'}, [
+            createElement('img', {
+              'class': 'user-img',
+              'src': dataset.userProfileImg
+            }, [])
+          ]),
+          createElement('div', {'class': 'tweet-header-center'}, [
+            createElement('h5', {'class': 'user-name'}, [
+              createElement('a', {
+                'href': 'https://twitter.com/' + dataset.screenName
+              }, [dataset.username])
+            ]),
+            createElement('span', {
+              'class': 'user-screen-name'
+            }, ['@' + dataset.screenName])
+          ]),
+          createElement('div', {'class': 'tweet-header-right right'}, [
+            createElement('a', {'href': 'https://twitter.com'}, [
+              createElement('img', {'src': 'images/Twitter_Logo_Blue.png'}, [])
+            ])
+          ])
+        ]),
+        createElement('div', {'class': 'tweet-body'}, [
+          createElement('p', {'class': 'tweet-text'}, [dataset.text])
+        ]),
+        createElement('div', {'class': 'tweet-footer'}, [
+          createElement('div', {'class': 'replies valign-wrapper'}, [
+            createElement('span', {'class': 'icons replies-icon'}, ['']),
+            createElement('span', {'class': 'replies-count'}, ['N/A'])
+          ]),
+          createElement('div', {'class': 'retweets valign-wrapper'}, [
+            createElement('span', {'class': 'icons retweets-icon'}, ['']),
+            createElement('span', {
+              'class': 'retweets-count'
+            }, [dataset.retweetCount])
+          ]),
+          createElement('div', {'class': 'favorites valign-wrapper'}, [
+            createElement('span', {'class': 'icons favorties-icon'}, ['']),
+            createElement('span', {
+              'class': 'favorites-count'
+            }, [dataset.favoriteCount])
+          ]),
+          createElement('div', {'class': 'timestamp right'}, [
+            createElement('span', {'class': 'time'}, [dataset.createDate])
+          ])
+        ])
+      ])
+    ])
+    $list.appendChild($tweet)
+  })
+  return $list
 }
