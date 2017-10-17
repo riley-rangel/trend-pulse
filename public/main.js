@@ -143,13 +143,17 @@ router.when('data', ($view, params) => {
   $view.appendChild(renderDataContainers())
   const $keyword = document.querySelector('#keyword')
   $keyword.textContent = '"' + params.keyword + '"'
-  return fetchKeywordData(params.keyword)
+  return Promise.all([
+    fetchKeywordData(params.keyword),
+    fetchTweets(params.keyword)
+  ])
 })
 
 router.listen()
 
 function fetchTweets(keyword) {
   fetch('/tweets/' + keyword)
+    .then(response => response.json())
     .then(JSONRes => {
       const filtered = filterRawTwitter(JSONRes)
       return filtered
@@ -160,8 +164,6 @@ function fetchTweets(keyword) {
     })
     .catch(reject => console.error)
 }
-
-console.log(fetchTweets)
 
 function filterRawTwitter(response) {
   const filteredData = []
