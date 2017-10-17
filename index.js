@@ -12,8 +12,6 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 })
 
-console.log(client)
-
 const app = express()
 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -43,6 +41,21 @@ app.get('/trending/:keyword', (req, res) => {
   ])
     .then(response => res.json(response))
     .catch(reject => console.error(reject))
+})
+
+app.get('/tweets/:keyword', (req, res) => {
+  const keyword = req.params.keyword
+  client.get('search/tweets', {
+    q: keyword,
+    lang: 'en',
+    result_type: 'popular',
+    count: 25
+  })
+    .then(response => res.json(response))
+    .catch(reject => {
+      res.sendStatus(500)
+      console.error(reject)
+    })
 })
 
 app.listen(3000, () => console.log('Port 3000 Open.'))
