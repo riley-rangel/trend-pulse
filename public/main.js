@@ -147,3 +147,12 @@ router.when('data', ($view, params) => {
 })
 
 router.listen()
+
+function fetchTweets(keyword) {
+  fetch('/tweets/' + keyword)
+    .then(response => response.json())
+    .then(JSONRes => console.log(JSONRes))
+    .catch(reject => console.error)
+}
+
+console.log(fetchTweets)
