@@ -104,6 +104,15 @@ function renderDataContainers() {
       createElement('p', {'class': 'data-footer center'}, [
         'Infomation via Google Trends. All times are Central Standard.'
       ])
+    ]),
+    createElement('div', {'class': 'col s6'}, [
+      createElement('p', {'class': 'data-header center'}, [
+        'Twitter - Most Popular'
+      ]),
+      createElement('div', {'class': 'card z-depth-1', 'id': 'tweets'}, []),
+      createElement('p', {'class': 'data-footer center'}, [
+        'Infomation via Twitter.'
+      ])
     ])
   ])
   return $div
