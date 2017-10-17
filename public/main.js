@@ -150,15 +150,18 @@ router.listen()
 
 function fetchTweets(keyword) {
   fetch('/tweets/' + keyword)
-    .then(response => response.json())
     .then(JSONRes => {
       const filtered = filterRawTwitter(JSONRes)
-      console.log(filtered)
+      return filtered
+    })
+    .then(filtered => {
+      const $tweets = document.querySelector('#tweets')
+      $tweets.appendChild(renderTweets(filtered))
     })
     .catch(reject => console.error)
 }
 
-console.log(fetchTweets + renderTweets)
+console.log(fetchTweets)
 
 function filterRawTwitter(response) {
   const filteredData = []
@@ -185,6 +188,7 @@ function filterRawTwitter(response) {
 function renderTweets(filteredData) {
   const $list = document.createElement('ul')
   filteredData.forEach(dataset => {
+    const date = tweetDate(dataset.createDate)
     const $tweet = createElement('li', {'class': 'tweet'}, [
       createElement('a', {'href': dataset.tweetURL}, [
         createElement('div', {'class': 'tweet-header'}, [
@@ -231,7 +235,7 @@ function renderTweets(filteredData) {
             }, [dataset.favoriteCount])
           ]),
           createElement('div', {'class': 'timestamp right'}, [
-            createElement('span', {'class': 'time'}, [dataset.createDate])
+            createElement('span', {'class': 'time'}, [date])
           ])
         ])
       ])
@@ -239,4 +243,27 @@ function renderTweets(filteredData) {
     $list.appendChild($tweet)
   })
   return $list
+}
+
+function tweetDate(dateString) {
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const month = date.getMonth()
+  const year = date.getFullYear()
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ]
+  const tweetDate = day + ' ' + months[month] + ' ' + year
+  return tweetDate
 }
