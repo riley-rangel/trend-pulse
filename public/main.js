@@ -104,6 +104,15 @@ function renderDataContainers() {
       createElement('p', {'class': 'data-footer center'}, [
         'Infomation via Google Trends. All times are Central Standard.'
       ])
+    ]),
+    createElement('div', {'class': 'col s6'}, [
+      createElement('p', {'class': 'data-header center'}, [
+        'Twitter - Most Popular'
+      ]),
+      createElement('div', {'class': 'card z-depth-1', 'id': 'tweets'}, []),
+      createElement('p', {'class': 'data-footer center'}, [
+        'Infomation via Twitter.'
+      ])
     ])
   ])
   return $div
@@ -134,7 +143,129 @@ router.when('data', ($view, params) => {
   $view.appendChild(renderDataContainers())
   const $keyword = document.querySelector('#keyword')
   $keyword.textContent = '"' + params.keyword + '"'
-  return fetchKeywordData(params.keyword)
+  return Promise.all([
+    fetchKeywordData(params.keyword),
+    fetchTweets(params.keyword)
+  ])
 })
 
 router.listen()
+
+function fetchTweets(keyword) {
+  fetch('/tweets/' + keyword)
+    .then(response => response.json())
+    .then(JSONRes => {
+      const filtered = filterRawTwitter(JSONRes)
+      return filtered
+    })
+    .then(filtered => {
+      const $tweets = document.querySelector('#tweets')
+      $tweets.appendChild(renderTweets(filtered))
+    })
+    .catch(reject => console.error)
+}
+
+function filterRawTwitter(response) {
+  const filteredData = []
+  const statuses = response.statuses
+  statuses.forEach(status => {
+    const splitText = status.text.split('https://')
+    const filtered = {
+      createDate: status.created_at,
+      tweetURL: 'https://' + splitText[1],
+      favoriteCount: status.favorite_count,
+      retweetCount: status.retweet_count,
+      text: splitText[0].replace('&amp;', '&'),
+      username: status.user.name,
+      screenName: status.user.screen_name,
+      userURL: status.user.url,
+      userProfileImg: status.user.profile_image_url,
+      verified: status.user.verified
+    }
+    filteredData.push(filtered)
+  })
+  return filteredData
+}
+
+function renderTweets(filteredData) {
+  const $list = document.createElement('ul')
+  filteredData.forEach(dataset => {
+    const date = tweetDate(dataset.createDate)
+    const $tweet = createElement('li', {'class': 'tweet'}, [
+      createElement('a', {'href': dataset.tweetURL}, [
+        createElement('div', {'class': 'tweet-header'}, [
+          createElement('div', {'class': 'tweet-header-left'}, [
+            createElement('img', {
+              'class': 'user-img',
+              'src': dataset.userProfileImg
+            }, [])
+          ]),
+          createElement('div', {'class': 'tweet-header-center'}, [
+            createElement('h5', {'class': 'user-name'}, [
+              createElement('a', {
+                'href': 'https://twitter.com/' + dataset.screenName
+              }, [dataset.username])
+            ]),
+            createElement('span', {
+              'class': 'user-screen-name'
+            }, ['@' + dataset.screenName])
+          ]),
+          createElement('div', {'class': 'tweet-header-right right'}, [
+            createElement('a', {'href': 'https://twitter.com'}, [
+              createElement('img', {'src': 'images/Twitter_Logo_Blue.png'}, [])
+            ])
+          ])
+        ]),
+        createElement('div', {'class': 'tweet-body'}, [
+          createElement('p', {'class': 'tweet-text'}, [dataset.text])
+        ]),
+        createElement('div', {'class': 'tweet-footer'}, [
+          createElement('div', {'class': 'replies valign-wrapper'}, [
+            createElement('span', {'class': 'icons replies-icon'}, ['']),
+            createElement('span', {'class': 'replies-count'}, ['N/A'])
+          ]),
+          createElement('div', {'class': 'retweets valign-wrapper'}, [
+            createElement('span', {'class': 'icons retweets-icon'}, ['']),
+            createElement('span', {
+              'class': 'retweets-count'
+            }, [dataset.retweetCount])
+          ]),
+          createElement('div', {'class': 'favorites valign-wrapper'}, [
+            createElement('span', {'class': 'icons favorties-icon'}, ['']),
+            createElement('span', {
+              'class': 'favorites-count'
+            }, [dataset.favoriteCount])
+          ]),
+          createElement('div', {'class': 'timestamp right'}, [
+            createElement('span', {'class': 'time'}, [date])
+          ])
+        ])
+      ])
+    ])
+    $list.appendChild($tweet)
+  })
+  return $list
+}
+
+function tweetDate(dateString) {
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const month = date.getMonth()
+  const year = date.getFullYear()
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ]
+  const tweetDate = day + ' ' + months[month] + ' ' + year
+  return tweetDate
+}

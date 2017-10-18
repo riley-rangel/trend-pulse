@@ -2,6 +2,15 @@ const express = require('express')
 const path = require('path')
 const gst = require('google-search-trends')
 const googleTrends = require('google-trends-api')
+const Twitter = require('twitter')
+require('dotenv').config()
+
+const client = new Twitter({
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+})
 
 const app = express()
 
@@ -32,6 +41,21 @@ app.get('/trending/:keyword', (req, res) => {
   ])
     .then(response => res.json(response))
     .catch(reject => console.error(reject))
+})
+
+app.get('/tweets/:keyword', (req, res) => {
+  const keyword = req.params.keyword
+  client.get('search/tweets', {
+    q: keyword,
+    lang: 'en',
+    result_type: 'popular',
+    count: 25
+  })
+    .then(response => res.json(response))
+    .catch(reject => {
+      res.sendStatus(500)
+      console.error(reject)
+    })
 })
 
 app.listen(3000, () => console.log('Port 3000 Open.'))
