@@ -125,39 +125,13 @@ router.when('data', ($view, params) => {
 router.listen()
 
 function fetchTweets(keyword) {
-  fetch('/tweets/' + keyword)
+  return fetch('/tweets/' + keyword)
     .then(response => response.json())
-    .then(JSONRes => {
-      const filtered = filterRawTwitter(JSONRes)
-      return filtered
-    })
-    .then(filtered => {
+    .then(parsed => {
       const $tweets = document.querySelector('#tweets')
-      $tweets.appendChild(renderTweets(filtered))
+      $tweets.appendChild(renderTweets(parsed))
     })
     .catch(reject => console.error)
-}
-
-function filterRawTwitter(response) {
-  const filteredData = []
-  const statuses = response.statuses
-  statuses.forEach(status => {
-    const splitText = status.text.split('https://')
-    const filtered = {
-      createDate: status.created_at,
-      tweetURL: 'https://' + splitText[1],
-      favoriteCount: status.favorite_count,
-      retweetCount: status.retweet_count,
-      text: splitText[0].replace('&amp;', '&'),
-      username: status.user.name,
-      screenName: status.user.screen_name,
-      userURL: status.user.url,
-      userProfileImg: status.user.profile_image_url,
-      verified: status.user.verified
-    }
-    filteredData.push(filtered)
-  })
-  return filteredData
 }
 
 function renderTweets(filteredData) {
