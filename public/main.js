@@ -47,9 +47,12 @@ function fetchKeywordData(keyword) {
   return fetch('/trending/' + keyword)
     .then(response => response.json())
     .then(data => {
-      const [areaGraphData, worldMapData] = data
+      const [trends, twitter] = data
+      const [areaGraphData, worldMapData] = trends
+      const $tweets = document.querySelector('#tweets')
       renderAreaChart('#area-graph', areaGraphData, 400, 600)
       renderGlobalHeatMap('#world-map', worldMapData, 377, 600, 100)
+      $tweets.appendChild(renderTweets(twitter))
     })
     .catch(reject => console.error(reject))
 }
@@ -116,23 +119,10 @@ router.when('data', ($view, params) => {
   $view.appendChild(renderDataContainers())
   const $keyword = document.querySelector('#keyword')
   $keyword.textContent = '"' + params.keyword + '"'
-  return Promise.all([
-    fetchKeywordData(params.keyword),
-    fetchTweets(params.keyword)
-  ])
+  return fetchKeywordData(params.keyword)
 })
 
 router.listen()
-
-function fetchTweets(keyword) {
-  return fetch('/tweets/' + keyword)
-    .then(response => response.json())
-    .then(parsed => {
-      const $tweets = document.querySelector('#tweets')
-      $tweets.appendChild(renderTweets(parsed))
-    })
-    .catch(reject => console.error)
-}
 
 function renderTweets(filteredData) {
   const $list = document.createElement('ul')

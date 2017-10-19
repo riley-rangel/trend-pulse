@@ -37,31 +37,24 @@ app.get('/trending/:keyword', (req, res) => {
     googleTrends.interestByRegion({
       keyword: keyword,
       startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
+    }),
+    client.get('search/tweets', {
+      q: keyword,
+      lang: 'en',
+      result_type: 'popular',
+      count: 25
     })
   ])
     .then(res => {
-      const [time, region] = res
-      const datasets = [JSON.parse(time), JSON.parse(region)]
-      return filterRawTrends(datasets)
+      const datasets = []
+      const [time, region, twitter] = res
+      const trends = [JSON.parse(time), JSON.parse(region)]
+      datasets.push(filterRawTrends(trends))
+      datasets.push(filterRawTwitter(twitter))
+      return datasets
     })
     .then(filtered => res.json(filtered))
     .catch(reject => console.error(reject))
-})
-
-app.get('/tweets/:keyword', (req, res) => {
-  const keyword = req.params.keyword
-  client.get('search/tweets', {
-    q: keyword,
-    lang: 'en',
-    result_type: 'popular',
-    count: 25
-  })
-    .then(response => filterRawTwitter(response))
-    .then(filtered => res.json(filtered))
-    .catch(reject => {
-      res.sendStatus(500)
-      console.error(reject)
-    })
 })
 
 app.listen(3000, () => console.log('Port 3000 Open.'))
@@ -87,9 +80,9 @@ function filterRawTrends(rawData) {
   return data
 }
 
-function filterRawTwitter(response) {
+function filterRawTwitter(rawData) {
   const filteredData = []
-  const statuses = response.statuses
+  const statuses = rawData.statuses
   statuses.forEach(status => {
     const splitText = status.text.split('https://')
     const filtered = {
