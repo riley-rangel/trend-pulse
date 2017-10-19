@@ -39,7 +39,12 @@ app.get('/trending/:keyword', (req, res) => {
       startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))
     })
   ])
-    .then(response => res.json(response))
+    .then(res => {
+      const [time, region] = res
+      const datasets = [JSON.parse(time), JSON.parse(region)]
+      return filterRawTrends(datasets)
+    })
+    .then(filtered => res.json(filtered))
     .catch(reject => console.error(reject))
 })
 
@@ -59,3 +64,24 @@ app.get('/tweets/:keyword', (req, res) => {
 })
 
 app.listen(3000, () => console.log('Port 3000 Open.'))
+
+function filterRawTrends(rawData) {
+  const timelineData = rawData[0].default.timelineData
+  const areaGraphData = []
+  timelineData.forEach(dataset => {
+    areaGraphData.push({
+      'time': dataset.formattedTime,
+      'value': dataset.value[0]
+    })
+  })
+  const geoMapData = rawData[1].default.geoMapData
+  const worldMapData = []
+  geoMapData.forEach(dataset => {
+    worldMapData.push({
+      'geoName': dataset.geoName,
+      'value': dataset.value[0]
+    })
+  })
+  const data = [areaGraphData, worldMapData]
+  return data
+}

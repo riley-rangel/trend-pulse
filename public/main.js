@@ -46,33 +46,6 @@ document.body.addEventListener('click', () => {
 function fetchKeywordData(keyword) {
   return fetch('/trending/' + keyword)
     .then(response => response.json())
-    .then(JSONResponse => {
-      const datasets = []
-      JSONResponse.forEach(dataset => {
-        datasets.push(JSON.parse(dataset))
-      })
-      return datasets
-    })
-    .then(datasets => {
-      const timelineData = datasets[0].default.timelineData
-      const areaGraphData = []
-      timelineData.forEach(dataset => {
-        areaGraphData.push({
-          'time': dataset.formattedTime,
-          'value': dataset.value[0]
-        })
-      })
-      const geoMapData = datasets[1].default.geoMapData
-      const worldMapData = []
-      geoMapData.forEach(dataset => {
-        worldMapData.push({
-          'geoName': dataset.geoName,
-          'value': dataset.value[0]
-        })
-      })
-      const data = [areaGraphData, worldMapData]
-      return data
-    })
     .then(data => {
       const [areaGraphData, worldMapData] = data
       renderAreaChart('#area-graph', areaGraphData, 400, 600)
