@@ -3,6 +3,7 @@ const path = require('path')
 const gst = require('google-search-trends')
 const googleTrends = require('google-trends-api')
 const Twitter = require('twitter')
+const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3')
 require('dotenv').config()
 
 const client = new Twitter({
@@ -12,6 +13,13 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 })
 
+const toneAnalyzer = new ToneAnalyzerV3({
+  url: process.env.WATSON_URL,
+  username: process.env.WATSON_USERNAME,
+  password: process.env.WATSON_PASSWORD,
+  version_date: process.env.WATSON_VER_DATE
+})
+console.log(toneAnalyzer)
 const app = express()
 
 app.use(express.static(path.join(__dirname, 'public')))
