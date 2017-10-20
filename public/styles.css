@@ -240,11 +240,14 @@ svg {
 }
 
 .emotion {
+  display: block;
   margin-left: 0.5rem;
   transform: translateY(-13%);
+  text-align: center;
 }
 
 .color {
+  margin: 0 auto;
   height: 1rem;
   width: 1rem;
   border-radius: 5px;

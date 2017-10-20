@@ -227,13 +227,9 @@ function renderBarLegend(dataset) {
   const $legend = createElement('div', {}, [])
   dataset.forEach(point => {
     const $key = createElement('div', {'class': 'emotion-key left'}, [
-      createElement('div', {
-        'class': 'color left',
-        'id': point.tone_id
-      }, []),
-      createElement('span', {
-        'class': 'emotion left'
-      }, [point.tone_name + ': ' + Math.round(point.score * 100) + '%'])
+      createElement('span', {'class': 'emotion'},
+        [point.tone_name + ': ' + Math.round(point.score * 100) + '%']),
+      createElement('div', {'class': 'color', 'id': point.tone_id}, [])
     ])
     $legend.appendChild($key)
   })
