@@ -60,7 +60,7 @@ function fetchKeywordData(keyword) {
 
 function renderDataContainers() {
   const $div = createElement('div', {'class': 'row'}, [
-    createElement('h4', {'class': 'heading center'}, [
+    createElement('h4', {'class': 'center heading'}, [
       'Trend Information for: ',
       createElement('span', {'id': 'keyword'}, ['test'])
     ]),
@@ -89,6 +89,18 @@ function renderDataContainers() {
       createElement('div', {'class': 'card z-depth-1', 'id': 'tweets'}, []),
       createElement('p', {'class': 'data-footer center'}, [
         'Infomation via Twitter.'
+      ])
+    ]),
+    createElement('div', {'class': 'col s6'}, [
+      createElement('p', {'class': 'data-header center'}, [
+        'Sentiment Analysis'
+      ]),
+      createElement('div', {'class': 'sentiment card z-depth-1'}, [
+        createElement('div', {'id': 'legend'}, []),
+        createElement('div', {'id': 'bar-chart'}, [])
+      ]),
+      createElement('p', {'class': 'data-footer center'}, [
+        'Infomation via IBM Watson.'
       ])
     ])
   ])
