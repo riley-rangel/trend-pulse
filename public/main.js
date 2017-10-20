@@ -47,7 +47,8 @@ function fetchKeywordData(keyword) {
   return fetch('/trending/' + keyword)
     .then(response => response.json())
     .then(data => {
-      const [trends, twitter] = data
+      const {trends, twitter, documentTone} = data
+      console.log(documentTone)
       const [areaGraphData, worldMapData] = trends
       const $tweets = document.querySelector('#tweets')
       renderAreaChart('#area-graph', areaGraphData, 400, 600)

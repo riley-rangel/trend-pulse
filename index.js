@@ -63,7 +63,6 @@ app.get('/trending/:keyword', (req, res) => {
     })
     .then(datasets => {
       const [trends, twitter] = datasets
-      console.log(trends)
       let toneContent = ''
       twitter.forEach(tweet => {
         const text = cleanTweetText(tweet.text)
@@ -79,11 +78,14 @@ app.get('/trending/:keyword', (req, res) => {
           res.sendStatus(500)
           process.exit(1)
         }
-        console.log(analysis)
+        const allData = {
+          trends,
+          twitter,
+          documentTone: analysis.document_tone
+        }
+        res.json(allData)
       })
-      return datasets
     })
-    .then(filtered => res.json(filtered))
     .catch(reject => console.error(reject))
 })
 
