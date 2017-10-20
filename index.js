@@ -61,6 +61,28 @@ app.get('/trending/:keyword', (req, res) => {
       datasets.push(filterRawTwitter(twitter))
       return datasets
     })
+    .then(datasets => {
+      const [trends, twitter] = datasets
+      console.log(trends)
+      let toneContent = ''
+      twitter.forEach(tweet => {
+        const text = cleanTweetText(tweet.text)
+        toneContent += text + '\n\n'
+      })
+      toneAnalyzer.tone({
+        text: JSON.stringify(toneContent),
+        tones: 'emotion'
+      },
+      (error, analysis) => {
+        if (error) {
+          console.error(error)
+          res.sendStatus(500)
+          process.exit(1)
+        }
+        console.log(analysis)
+      })
+      return datasets
+    })
     .then(filtered => res.json(filtered))
     .catch(reject => console.error(reject))
 })
@@ -122,5 +144,3 @@ function cleanTweetText(string) {
   }
   return string
 }
-
-console.log(cleanTweetText, toneAnalyzer)
