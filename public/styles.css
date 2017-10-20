@@ -64,6 +64,7 @@ label > i.material-icons {
 }
 
 .data-footer {
+  margin-bottom: 2rem;
   font-size: 0.75rem;
   color: #757575;
 }
@@ -210,4 +211,70 @@ svg {
 .retweets-count,
 .favorites-count {
   margin-left: 0.3rem;
+}
+
+.sentiment {
+  height: 26.5rem;
+}
+
+#bar-chart {
+  margin: 2rem 3rem 0;
+  width: auto;
+  border-left: 3px solid black;
+  border-bottom: 3px solid black;
+}
+
+#bar-chart > div {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  height: 3rem;
+}
+
+#legend {
+  width: 100%;
+  padding: 2rem 1rem;
+}
+
+.emotion-key {
+  height: 100%;
+  width: calc(100% / 5);
+}
+
+.emotion {
+  display: block;
+  margin-left: 0.5rem;
+  transform: translateY(-13%);
+  text-align: center;
+}
+
+.color {
+  margin: 0 auto;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 5px;
+}
+
+#anger {
+  background-color: rgba(208, 50, 53, 0.4);
+  border: 2px solid rgb(208, 50, 53);
+}
+
+#disgust {
+  background-color: rgba(81, 51, 165, 0.4);
+  border: 2px solid rgb(81, 51, 165);
+}
+
+#fear {
+  background-color: rgba(60, 141, 65, 0.4);
+  border: 2px solid rgb(60, 141, 65);
+}
+
+#joy {
+  background-color: rgba(250, 191, 64, 0.4);
+  border: 2px solid rgb(250, 191, 64);
+}
+
+#sadness {
+  background-color: rgba(34, 120, 207, 0.4);
+  border: 2px solid rgb(34, 120, 207);
 }

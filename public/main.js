@@ -1,4 +1,4 @@
-/* global createElement renderAreaChart renderGlobalHeatMap HashRouter */
+/* global createElement renderAreaChart renderGlobalHeatMap HashRouter renderToneBarGraph */
 
 const $views = document.querySelectorAll('.view')
 const $home = document.querySelector('#home')
@@ -46,44 +46,24 @@ document.body.addEventListener('click', () => {
 function fetchKeywordData(keyword) {
   return fetch('/trending/' + keyword)
     .then(response => response.json())
-    .then(JSONResponse => {
-      const datasets = []
-      JSONResponse.forEach(dataset => {
-        datasets.push(JSON.parse(dataset))
-      })
-      return datasets
-    })
-    .then(datasets => {
-      const timelineData = datasets[0].default.timelineData
-      const areaGraphData = []
-      timelineData.forEach(dataset => {
-        areaGraphData.push({
-          'time': dataset.formattedTime,
-          'value': dataset.value[0]
-        })
-      })
-      const geoMapData = datasets[1].default.geoMapData
-      const worldMapData = []
-      geoMapData.forEach(dataset => {
-        worldMapData.push({
-          'geoName': dataset.geoName,
-          'value': dataset.value[0]
-        })
-      })
-      const data = [areaGraphData, worldMapData]
-      return data
-    })
     .then(data => {
-      const [areaGraphData, worldMapData] = data
+      const {trends, twitter, documentTone} = data
+      const tones = documentTone.tone_categories[0].tones
+      const [areaGraphData, worldMapData] = trends
+      const $tweets = document.querySelector('#tweets')
+      const $legend = document.querySelector('#legend')
+      $legend.appendChild(renderBarLegend(tones))
       renderAreaChart('#area-graph', areaGraphData, 400, 600)
       renderGlobalHeatMap('#world-map', worldMapData, 377, 600, 100)
+      $tweets.appendChild(renderTweets(twitter))
+      renderToneBarGraph('#bar-chart', tones)
     })
     .catch(reject => console.error(reject))
 }
 
 function renderDataContainers() {
   const $div = createElement('div', {'class': 'row'}, [
-    createElement('h4', {'class': 'heading center'}, [
+    createElement('h4', {'class': 'center heading'}, [
       'Trend Information for: ',
       createElement('span', {'id': 'keyword'}, ['test'])
     ]),
@@ -112,6 +92,18 @@ function renderDataContainers() {
       createElement('div', {'class': 'card z-depth-1', 'id': 'tweets'}, []),
       createElement('p', {'class': 'data-footer center'}, [
         'Infomation via Twitter.'
+      ])
+    ]),
+    createElement('div', {'class': 'col s6'}, [
+      createElement('p', {'class': 'data-header center'}, [
+        'Sentiment Analysis'
+      ]),
+      createElement('div', {'class': 'sentiment card z-depth-1'}, [
+        createElement('div', {'id': 'legend'}, []),
+        createElement('div', {'id': 'bar-chart'}, [])
+      ]),
+      createElement('p', {'class': 'data-footer center'}, [
+        'Infomation via IBM Watson.'
       ])
     ])
   ])
@@ -143,49 +135,10 @@ router.when('data', ($view, params) => {
   $view.appendChild(renderDataContainers())
   const $keyword = document.querySelector('#keyword')
   $keyword.textContent = '"' + params.keyword + '"'
-  return Promise.all([
-    fetchKeywordData(params.keyword),
-    fetchTweets(params.keyword)
-  ])
+  return fetchKeywordData(params.keyword)
 })
 
 router.listen()
-
-function fetchTweets(keyword) {
-  fetch('/tweets/' + keyword)
-    .then(response => response.json())
-    .then(JSONRes => {
-      const filtered = filterRawTwitter(JSONRes)
-      return filtered
-    })
-    .then(filtered => {
-      const $tweets = document.querySelector('#tweets')
-      $tweets.appendChild(renderTweets(filtered))
-    })
-    .catch(reject => console.error)
-}
-
-function filterRawTwitter(response) {
-  const filteredData = []
-  const statuses = response.statuses
-  statuses.forEach(status => {
-    const splitText = status.text.split('https://')
-    const filtered = {
-      createDate: status.created_at,
-      tweetURL: 'https://' + splitText[1],
-      favoriteCount: status.favorite_count,
-      retweetCount: status.retweet_count,
-      text: splitText[0].replace('&amp;', '&'),
-      username: status.user.name,
-      screenName: status.user.screen_name,
-      userURL: status.user.url,
-      userProfileImg: status.user.profile_image_url,
-      verified: status.user.verified
-    }
-    filteredData.push(filtered)
-  })
-  return filteredData
-}
 
 function renderTweets(filteredData) {
   const $list = document.createElement('ul')
@@ -269,3 +222,18 @@ function tweetDate(dateString) {
   const tweetDate = day + ' ' + months[month] + ' ' + year
   return tweetDate
 }
+
+function renderBarLegend(dataset) {
+  const $legend = createElement('div', {}, [])
+  dataset.forEach(point => {
+    const $key = createElement('div', {'class': 'emotion-key left'}, [
+      createElement('span', {'class': 'emotion'},
+        [point.tone_name + ': ' + Math.round(point.score * 100) + '%']),
+      createElement('div', {'class': 'color', 'id': point.tone_id}, [])
+    ])
+    $legend.appendChild($key)
+  })
+  return $legend
+}
+
+console.log(renderBarLegend)
