@@ -207,3 +207,22 @@ function tweetDate(dateString) {
   const tweetDate = day + ' ' + months[month] + ' ' + year
   return tweetDate
 }
+
+function renderBarLegend(dataset) {
+  const $legend = createElement('div', {}, [])
+  dataset.forEach(point => {
+    const $key = createElement('div', {'class': 'emotion-key left'}, [
+      createElement('div', {
+        'class': 'color left',
+        'id': point.tone_id
+      }, []),
+      createElement('span', {
+        'class': 'emotion left'
+      }, [point.tone_name + ': ' + Math.round(point.score * 100) + '%'])
+    ])
+    $legend.appendChild($key)
+  })
+  return $legend
+}
+
+console.log(renderBarLegend)
