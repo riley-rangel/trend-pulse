@@ -19,7 +19,7 @@ const toneAnalyzer = new ToneAnalyzerV3({
   password: process.env.WATSON_PASSWORD,
   version_date: process.env.WATSON_VER_DATE
 })
-console.log(toneAnalyzer)
+
 const app = express()
 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -109,3 +109,18 @@ function filterRawTwitter(rawData) {
   })
   return filteredData
 }
+
+function cleanTweetText(string) {
+  const clean = new RegExp(/(\.|\?|!)$/)
+  const unclean = new RegExp(/(\s|…|:)$/)
+  if (unclean.test(string)) {
+    const replaced = string.replace(unclean, '')
+    return cleanTweetText(replaced)
+  }
+  if (!clean.test(string)) {
+    return string + '.'
+  }
+  return string
+}
+
+console.log(cleanTweetText, toneAnalyzer)
