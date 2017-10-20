@@ -1,4 +1,4 @@
-/* global createElement renderAreaChart renderGlobalHeatMap HashRouter */
+/* global createElement renderAreaChart renderGlobalHeatMap HashRouter renderToneBarGraph */
 
 const $views = document.querySelectorAll('.view')
 const $home = document.querySelector('#home')
@@ -48,12 +48,15 @@ function fetchKeywordData(keyword) {
     .then(response => response.json())
     .then(data => {
       const {trends, twitter, documentTone} = data
-      console.log(documentTone)
+      const tones = documentTone.tone_categories[0].tones
       const [areaGraphData, worldMapData] = trends
       const $tweets = document.querySelector('#tweets')
+      const $legend = document.querySelector('#legend')
+      $legend.appendChild(renderBarLegend(tones))
       renderAreaChart('#area-graph', areaGraphData, 400, 600)
       renderGlobalHeatMap('#world-map', worldMapData, 377, 600, 100)
       $tweets.appendChild(renderTweets(twitter))
+      renderToneBarGraph('#bar-chart', tones)
     })
     .catch(reject => console.error(reject))
 }
