@@ -140,6 +140,36 @@ function renderToneBarGraph(selector, dataset) {
     .enter()
     .append('div')
     .style('width', d => d.score * 100 + '%')
+    .style('background-color', d => colorScheme(d.tone_id, 'backgroundColor'))
+    .style('border', d => colorScheme(d.tone_id, 'border'))
 
   return chart
+}
+
+function colorScheme(toneId, attr) {
+  const colorScheme = {
+    anger: {
+      backgroundColor: 'rgba(208, 50, 53, 0.4)',
+      border: '2px solid rgb(208, 50, 53)'
+    },
+    disgust: {
+      backgroundColor: 'rgba(81, 51, 165, 0.4)',
+      border: '2px solid rgb(81, 51, 165)'
+    },
+    fear: {
+      backgroundColor: 'rgba(60, 141, 65, 0.4)',
+      border: '2px solid rgb(60, 141, 65)'
+    },
+    joy: {
+      backgroundColor: 'rgba(250, 191, 64, 0.4)',
+      border: '2px solid rgb(250, 191, 64)'
+    },
+    sadness: {
+      backgroundColor: 'rgba(34, 120, 207, 0.4)',
+      border: '2px solid rgb(34, 120, 207)'
+    }
+  }
+  const emotion = colorScheme[toneId]
+  const color = emotion[attr]
+  return color
 }
