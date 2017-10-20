@@ -132,3 +132,14 @@ function renderGlobalHeatMap(selector, dataset, svgHeight, svgWidth, scale) {
       .attr('fill', d => color(d, dataset))
   }
 }
+
+function renderToneBarGraph(selector, dataset) {
+  const chart = d3.select(selector)
+    .selectAll('div')
+    .data(dataset)
+    .enter()
+    .append('div')
+    .style('width', d => d.score * 100 + '%')
+
+  return chart
+}
